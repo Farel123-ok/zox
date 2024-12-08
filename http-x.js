@@ -1,6 +1,5 @@
  const net = require("net");
  const http2 = require("http2");
- const axios = require("axios");
  const tls = require("tls");
  const cluster = require("cluster");
  const url = require("url");
@@ -38,33 +37,11 @@ Example: node HTTP-X.js https://target.com 120 32 8 proxy.txt
     return `(\x1b[34m${hours}:${minutes}:${seconds}\x1b[0m)`;
   };
 
-  const targetURL = process.argv[2];
-  const agent = new https.Agent({ rejectUnauthorized: false });
 
-  function getStatus() {
-  const timeoutPromise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      reject(new Error('Request Timed Out'));
-    }, 5000);
-  });
-
-  const axiosPromise = axios.get(targetURL, { httpsAgent: agent });
-
-  Promise.race([axiosPromise, timeoutPromise])
-    .then((response) => {
-      const { status, data } = response;
-      console.log(`${getCurrentTime()} [HTTP-X]  Title: ${getTitleFromHTML(data)} (\x1b[32m${status}\x1b[0m)`);
-    })
-    .catch((error) => {
-      if (error.message === 'Request Timed Out') {
-        console.log(`${getCurrentTime()} [HTTP-X]  Request Timed Out`);
-      } else if (error.response) {
-        const extractedTitle = getTitleFromHTML(error.response.data);
-        console.log(`${getCurrentTime()} [HTTP-X]  Title: ${extractedTitle} `);
-      } else {
-        console.log(`${getCurrentTime()} [HTTP-X]  ${error.message}`);
-      }
-    });
+// Fungsi untuk mengekstrak title dari HTML
+function getTitleFromHTML(html) {
+  const extractedTitle = html.match(/<title>(.*?)<\/title>/)?.[1];
+  return extractedTitle || 'No Title Found';
 }
 
 
