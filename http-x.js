@@ -38,13 +38,6 @@ Example: node HTTP-X.js https://target.com 120 32 8 proxy.txt
   };
 
 
-// Fungsi untuk mengekstrak title dari HTML
-function getTitleFromHTML(html) {
-  const extractedTitle = html.match(/<title>(.*?)<\/title>/)?[1];
-  return extractedTitle || 'No Title Found';
-}
-
-
  function getTitleFromHTML(html) {
    const titleRegex = /<title>(.*?)<\/title>/i;
    const match = html.match(titleRegex);
