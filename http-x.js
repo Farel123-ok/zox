@@ -7,7 +7,6 @@
  const crypto = require("crypto");
  const UserAgent = require('user-agents');
  const fs = require("fs");
- const axios = require('axios');
  const https = require('https');
 
  process.setMaxListeners(0);
